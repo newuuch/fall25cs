@@ -61,7 +61,7 @@ struct HashTable {
     }
     int get_index(const string &key) {
         if (useMAD) {
-            long long hashcode = polynomialHash(key,N);
+            long long hashcode = polynomialHash(key,aPoly);
             int index_MAD = CompressMAD(hashcode,N);
             return index_MAD;
         }
@@ -103,7 +103,7 @@ struct HashTable {
     }
 };
 //////////////////////////////////////////////////////////////////////////
-int main() {
+/*int main() {
     vector <string> allnames = load_names("Strings_collections.txt");
     cout << allnames.size()<<endl;
     long long polynomialHash_ = polynomialHash("Charosss", 37);
@@ -116,12 +116,29 @@ int main() {
         ht.insert("Bob");
         ht.insert("Bob");
     ht.Display_table();
-    ht.getTotalCollisions();
+    cout<<ht.getTotalCollisions();
 
-};
+};*/
 /////////////////////////////////////////////////////////////////////////////
-/*int main() {
+int main() {
     vector<int>avalues = {33,37,39,41};
     const int TABLE_SIZE = 10007;
     vector <string> allnames = load_names("Strings_collections.txt");
-}*/
+    vector<int>MADcollisions;
+    for (int i =0; i<avalues.size(); i++) {
+        HashTable HashMAD(50, avalues[i], true);
+        cout<<"a"<<'\n';
+        for (string &names: allnames) {
+            HashMAD.insert(names);
+        }
+        int coll_of_MAD = HashMAD.getTotalCollisions();
+        cout<<avalues[i]<<"MAD_coll"<<coll_of_MAD<<endl;
+        HashTable HashMOD(50, avalues[i], true);
+        cout<<"a"<<'\n';
+        for (string &names: allnames) {
+            HashMAD.insert(names);
+        }
+        int coll_of_MOD = HashMAD.getTotalCollisions();
+        cout<<avalues[i]<<"MAD_coll"<<coll_of_MAD<<endl;
+}
+};
