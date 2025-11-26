@@ -124,21 +124,26 @@ int main() {
     vector<int>avalues = {33,37,39,41};
     const int TABLE_SIZE = 10007;
     vector <string> allnames = load_names("Strings_collections.txt");
-    vector<int>MADcollisions;
+    vector<int>MAD_collisons(avalues.size());
+    vector<int> MOD_collisons(avalues.size());
     for (int i =0; i<avalues.size(); i++) {
-        HashTable HashMAD(50, avalues[i], true);
-        cout<<"a"<<'\n';
+        HashTable HashMAD(TABLE_SIZE, avalues[i], true);
         for (string &names: allnames) {
             HashMAD.insert(names);
         }
-        int coll_of_MAD = HashMAD.getTotalCollisions();
-        cout<<avalues[i]<<"MAD_coll"<<coll_of_MAD<<endl;
-        HashTable HashMOD(50, avalues[i], true);
-        cout<<"a"<<'\n';
+        MAD_collisons[i] = HashMAD.getTotalCollisions();
+    }
+    for (int i =0; i<avalues.size(); i++) {
+        HashTable HashMOD(TABLE_SIZE, avalues[i], false);
         for (string &names: allnames) {
-            HashMAD.insert(names);
+            HashMOD.insert(names);
         }
-        int coll_of_MOD = HashMAD.getTotalCollisions();
-        cout<<avalues[i]<<"MAD_coll"<<coll_of_MAD<<endl;
-}
+        MOD_collisons[i] = HashMOD.getTotalCollisions();
+    }
+        cout<<"a\tMAD_coll\tMOD_coll\n";
+        for (int i=0; i<avalues.size(); i++) {
+            cout<<avalues[i]<<"\t"<<MAD_collisons[i]<<"\t\t"<<MOD_collisons[i]<<endl;
+    }
+    return 0;
+
 };
