@@ -66,8 +66,8 @@ struct HashTable {
             return index_MAD;
         }
         long long hashcode = polynomialHash(key,aPoly);
-            int index_MOD = CompressMOD(hashcode,N);
-            return index_MOD;
+        int index_MOD = CompressMOD(hashcode,N);
+        return index_MOD;
 
     }
     void insert(const string &key) {
@@ -101,49 +101,65 @@ struct HashTable {
             }
         } return total;
     }
-};
-//////////////////////////////////////////////////////////////////////////
-/*int main() {
-    vector <string> allnames = load_names("Strings_collections.txt");
-    cout << allnames.size()<<endl;
-    long long polynomialHash_ = polynomialHash("Charosss", 37);
-    cout << polynomialHash_ << endl;
-    cout << CompressMAD(polynomialHash_, 100) << endl;
-    HashTable ht(50, 39, true);
-        ht.insert("Alice");
-        ht.insert("Anto");
-        ht.insert("Bob");
-        ht.insert("Bob");
-        ht.insert("Bob");
-    ht.Display_table();
-    cout<<ht.getTotalCollisions();
+    void getMaxCollBucket() {
+        int bucket_index = -1;
+        int bucket_size =  -1;
+        for (int i = 0; i<N; i++) {
+            if (bucket_size<(int)table[i].size()) {
+                bucket_size = table[i].size();
+                bucket_index = i;
+            }
+        }for (const string &s: table[bucket_index]) {
+            cout << s <<endl;
+        }
+    }
+    };
+    //////////////////////////////////////////////////////////////////////////
+    /*int main() {
+        vector <string> allnames = load_names("Strings_collections.txt");
+        cout << allnames.size()<<endl;
+        long long polynomialHash_ = polynomialHash("Charosss", 37);
+        cout << polynomialHash_ << endl;
+        cout << CompressMAD(polynomialHash_, 100) << endl;
+        HashTable ht(50, 39, true);
+            ht.insert("Alice");
+            ht.insert("Anto");
+            ht.insert("Bob");
+            ht.insert("Bob");
+            ht.insert("Bob");
+        ht.Display_table();
+        cout<<ht.getTotalCollisions();
 
-};*/
-/////////////////////////////////////////////////////////////////////////////
-int main() {
-    vector<int>avalues = {33,37,39,41};
-    const int TABLE_SIZE = 10007;
-    vector <string> allnames = load_names("Strings_collections.txt");
-    vector<int>MAD_collisons(avalues.size());
-    vector<int> MOD_collisons(avalues.size());
-    for (int i =0; i<avalues.size(); i++) {
-        HashTable HashMAD(TABLE_SIZE, avalues[i], true);
-        for (string &names: allnames) {
-            HashMAD.insert(names);
+    };*/
+    /////////////////////////////////////////////////////////////////////////////
+    int main() {
+        vector<int>avalues = {33,37,39,41};
+        const int TABLE_SIZE = 10007;
+        vector <string> allnames = load_names("Strings_collections.txt");
+        vector<int>MAD_collisons(avalues.size());
+        vector<int> MOD_collisons(avalues.size());
+        for (int i =0; i<avalues.size(); i++) {
+            HashTable HashMAD(TABLE_SIZE, avalues[i], true);
+            for (string &names: allnames)
+                HashMAD.insert(names);
+            cout << "\nMAD max collision bucket for a = " << avalues[i] << ":\n";
+                HashMAD.getMaxCollBucket();
+
+            MAD_collisons[i] = HashMAD.getTotalCollisions();
         }
-        MAD_collisons[i] = HashMAD.getTotalCollisions();
-    }
-    for (int i =0; i<avalues.size(); i++) {
-        HashTable HashMOD(TABLE_SIZE, avalues[i], false);
-        for (string &names: allnames) {
-            HashMOD.insert(names);
+
+        for (int i =0; i<avalues.size(); i++) {
+            HashTable HashMOD(TABLE_SIZE, avalues[i], false);
+            for (string &names: allnames)
+                HashMOD.insert(names);
+            cout << "\nMOD max collision bucket for a = " << avalues[i] << ":\n";
+                HashMOD.getMaxCollBucket();
+            MOD_collisons[i] = HashMOD.getTotalCollisions();
         }
-        MOD_collisons[i] = HashMOD.getTotalCollisions();
-    }
         cout<<"a\tMAD_coll\tMOD_coll\n";
         for (int i=0; i<avalues.size(); i++) {
             cout<<avalues[i]<<"\t"<<MAD_collisons[i]<<"\t\t"<<MOD_collisons[i]<<endl;
-    }
-    return 0;
+        }
+        return 0;
+    };
 
-};
