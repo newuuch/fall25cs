@@ -109,9 +109,11 @@ struct HashTable {
                 bucket_size = table[i].size();
                 bucket_index = i;
             }
-        }for (const string &s: table[bucket_index]) {
+        }cout<<"Amount of collisions: "<<bucket_size<<endl;
+        for (const string &s: table[bucket_index]) {
             cout << s <<endl;
         }
+        if (bucket_index == -1) return;
     }
     };
     //////////////////////////////////////////////////////////////////////////
@@ -134,7 +136,7 @@ struct HashTable {
     /////////////////////////////////////////////////////////////////////////////
     int main() {
         vector<int>avalues = {33,37,39,41};
-        const int TABLE_SIZE = 10007;
+        const int TABLE_SIZE = 19;
         vector <string> allnames = load_names("Strings_collections.txt");
         vector<int>MAD_collisons(avalues.size());
         vector<int> MOD_collisons(avalues.size());
